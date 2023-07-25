@@ -2,6 +2,8 @@ name: Process New Event
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'events/new-event*.md'
 

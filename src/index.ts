@@ -65,7 +65,7 @@ const main = async () => {
           const results = (await map(getSummary.results, aiResults)).filter(
             (result): result is Results => result !== undefined
           );
-          await writeSummary({ path: getSummary.summaryPath, data: getSummary.results });
+          await writeSummary({ path: getSummary.summaryPath, data: results });
         },
       ],
     });

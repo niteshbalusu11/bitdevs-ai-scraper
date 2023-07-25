@@ -3,7 +3,7 @@ name: Process New Event
 on:
   push:
     paths:
-      - 'events/new-event*.md'
+      - '*'
 
 jobs:
   build:

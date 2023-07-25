@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Important for "Create Pull Request" step
 
@@ -31,21 +31,23 @@ jobs:
 
       - name: Set up Git user
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "niteshbalusu@icloud.com"
+          git config --local user.name "Nitesh Balusu"
 
       - name: Commit and push
         run: |
           git checkout -b new-summary
           git add summaries/*
-          git commit -m "Add new summary"
-          git push origin new-summary
-          env:
-            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          # git commit -m "Add new summary"
+          # git push origin new-summary
+          # env:
+          #   GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
+          token: ${{ secrets.GH_TOKEN }}
           title: 'Add new summary'
+          commit-message: Add summary
           body: 'This pull request adds a new summary.'
           branch: 'new-summary'

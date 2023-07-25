@@ -30,7 +30,13 @@ export const summarize = async ({}) => {
 
   const eventPath = path.join(eventsDir, mostRecentEvent);
 
+  console.log(eventPath);
+
+  console.log(mostRecentEvent);
+
   const summaryPath = path.join(__dirname, '../', 'summaries', mostRecentEvent.replace('new-event', 'summary'));
+
+  console.log(summaryPath);
 
   const links = await getLinks({
     path: eventPath,

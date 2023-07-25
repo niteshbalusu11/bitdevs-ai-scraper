@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { load } from 'cheerio';
+import sanitizeHtml from 'sanitize-html';
 
 type Args = {
   url: string;
@@ -7,7 +8,9 @@ type Args = {
 
 type Return = {
   text: string;
+  title: string;
 };
+
 const scrape = async ({ url }: Args): Promise<Return> => {
   try {
     // Make an HTTP GET request to the URL
@@ -18,24 +21,36 @@ const scrape = async ({ url }: Args): Promise<Return> => {
     const $ = load(html);
 
     const title = $('title').text();
-    console.log(title);
 
     const paragraphs = $('p')
-      .map((index, element) => $(element).text())
+      .map((index, element) => {
+        let text = $(element).text();
+        text = sanitizeHtml(text, { allowedTags: [] }); // Strips out all HTML tags
+        text = text.replace(/^\s*[>]+/gm, '').trim(); // Removes '>' and '>>' from the beginning of each line
+        text = text.replace(/\s+/g, ' ').trim(); // Removes excessive whitespace
+        return text;
+      })
       .get()
+      .filter(text => text.length > 50 && text.length < 500) // Filters out too short or too long paragraphs
       .join('\n');
 
     const preTags = $('pre')
-      .map((index, element) => $(element).text())
+      .map((index, element) => {
+        let text = $(element).text();
+        text = sanitizeHtml(text, { allowedTags: [] }); // Strips out all HTML tags
+        text = text.replace(/^\s*[>]+/gm, '').trim(); // Removes '>' and '>>' from the beginning of each line
+        text = text.replace(/\s+/g, ' ').trim(); // Removes excessive whitespace
+        return text;
+      })
       .get()
       .join('\n');
 
-    const scrapedText = [title, paragraphs, preTags].join('\n\n');
+    const scrapedText = [paragraphs, preTags].join('\n\n');
 
-    return { text: scrapedText };
+    return { title, text: scrapedText };
   } catch (error: any) {
     console.error('Error occurred during scraping:', error.message);
-    return { text: '' };
+    return { title: '', text: '' };
   }
 };
 

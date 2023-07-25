@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+      # on:
+      #   push:
+      #     paths:
+      #       - 'events/new-event*.md'
+
 jobs:
   build:
     runs-on: ubuntu-latest

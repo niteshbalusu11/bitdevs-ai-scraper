@@ -1,18 +1,27 @@
 import * as dotenv from 'dotenv';
 
 import { Configuration, OpenAIApi } from 'openai';
+import { auto, map } from 'async';
 
-import { auto } from 'async';
 import { summarize } from './summerize';
 import writeSummary from './write_summary';
 
 dotenv.config();
 
+type Results = {
+  text: string;
+  title: string;
+};
+
 type Tasks = {
   initAi: {
     openai: OpenAIApi;
   };
-  test: any;
+  getSummary: {
+    results: Results[];
+    summaryPath: string;
+  };
+  summarize: Results;
 };
 
 const main = async () => {
@@ -28,25 +37,44 @@ const main = async () => {
         return { openai };
       },
 
-      test: [
+      getSummary: [
         'initAi',
-        async ({ initAi }) => {
-          const { text, summaryPath } = await summarize({});
+        async ({}) => {
+          const { results, summaryPath } = await summarize({});
 
-          await writeSummary({ path: summaryPath, data: text });
-          // const { openai } = initAi;
-          // const response = await openai.createCompletion({
-          //   model: 'text-davinci-003',
-          //   prompt: 'what is 2 + 2',
-          //   max_tokens: 7,
-          //   temperature: 0,
-          // });
-          // console.log(response.data);
+          return { results, summaryPath };
+        },
+      ],
+
+      summarize: [
+        'getSummary',
+        'initAi',
+        async ({ getSummary, initAi }) => {
+          const aiResults = async (summary: Results) => {
+            try {
+              const chatCompletion = await initAi.openai.createChatCompletion({
+                model: 'gpt-3.5-turbo',
+                messages: [{ role: 'user', content: `Summerize this for me: ${summary.text}` }],
+              });
+
+              const text = chatCompletion.data.choices[0].message?.content || 'No summary generated';
+
+              return { text, title: summary.title };
+            } catch (err: any) {
+              console.error(`Summarization failed for ${summary.title} \n ${err.message}`);
+            }
+          };
+
+          const results = (await map(getSummary.results, aiResults)).filter(
+            (result): result is Results => result !== undefined
+          );
+
+          await writeSummary({ path: getSummary.summaryPath, data: results });
         },
       ],
     });
   } catch (err: any) {
-    console.log(err.message);
+    throw err.message;
   }
 };
 

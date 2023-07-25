@@ -40,6 +40,8 @@ jobs:
           git add summaries/*
           git commit -m "Add new summary"
           git push origin new-summary
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3

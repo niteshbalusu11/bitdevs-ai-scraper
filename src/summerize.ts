@@ -1,8 +1,7 @@
-import { each, map } from 'async';
-import { readdirSync, statSync } from 'fs';
-
 import getLinks from './get_links';
+import { map } from 'async';
 import path from 'path';
+import { readdirSync } from 'fs';
 import scrape from './scrape';
 
 type Link = {
@@ -22,8 +21,14 @@ export const summarize = async ({}) => {
     throw new Error('No event files found');
   }
 
+  // Sort the files based on the date in their filenames
   newEventFiles.sort((a, b) => {
-    return statSync(path.join(eventsDir, b)).mtime.getTime() - statSync(path.join(eventsDir, a)).mtime.getTime();
+    // Extract the dates from the filenames
+    const dateA = a.slice('new-event-'.length);
+    const dateB = b.slice('new-event-'.length);
+
+    // Compare the dates lexicographically
+    return dateB.localeCompare(dateA);
   });
 
   const mostRecentEvent = newEventFiles[0];
@@ -31,7 +36,6 @@ export const summarize = async ({}) => {
   const eventPath = path.join(eventsDir, mostRecentEvent);
 
   console.log(eventPath);
-
   console.log(mostRecentEvent);
 
   const summaryPath = path.join(__dirname, '../', 'summaries', mostRecentEvent.replace('new-event', 'summary'));

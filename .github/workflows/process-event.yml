@@ -2,8 +2,8 @@ name: Process New Event
 
 on:
   push:
-    paths:
-      - '*'
+    branches:
+      - main
 
 jobs:
   build:

@@ -30,7 +30,7 @@ const scrape = async ({ url }: Args): Promise<Return> => {
       .get()
       .join('\n');
 
-    const scrapedText = [title, paragraphs, preTags].join('\n\n\n');
+    const scrapedText = [title, paragraphs, preTags].join('\n\n');
 
     return { text: scrapedText };
   } catch (error: any) {

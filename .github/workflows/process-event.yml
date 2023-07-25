@@ -16,18 +16,17 @@ jobs:
           fetch-depth: 0 # Important for "Create Pull Request" step
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '18' # Use the specific Node.js version your script requires
+          node-version: '18'
 
       - name: Install dependencies
         run: yarn install --network-timeout 1000000
 
-      - name: Build Project
-        run: yarn build
-
-      - name: Process new event
+      - name: Build and Process new event
         run: yarn start
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Set up Git user
         run: |

@@ -1,6 +1,5 @@
 Pubkey, a Manhattan Bitcoin Bar, Opens in Greenwich Village - Eater NYclockmenumore-arrownoyesmobileVox Media
 
-
 Filed under:
 Stuffed raccoons, beer cocktails, and hot dogs from a chef who trained at Eleven Madison Park
 Long, long ago in a Midtown office far, far away, I used to work for Investopedia, a website about money and investing where, among other things, I wrote about blockchain, cryptocurrency, Elon Musk, and Apple’s quarterly earnings. Now at Eater, I have a small dining budget, but most of what I cover somehow still seems to relate to either finance bros, food tech companies, or NFT restaurants. Well, if the shoe fits.
@@ -19,5 +18,4 @@ Find Pubkey a few steps down street level Monday to Wednesday, from 1 p.m. to 2 
 Sign up for our newsletter.
 Check your inbox for a welcome email.
 Oops. Something went wrong. Please enter a valid email and try again.
-
 

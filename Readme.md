@@ -9,7 +9,7 @@
 - Once you commit the file and push to the `main` branch, the github action will trigger and submit a PR to the main branch with the summery file.
 - [Check this out](https://github.com/niteshbalusu11/bitdevs-ai-scraper/blob/main/summaries/summary-2023-07-25.md) as an example after a file is summerized.
 - Summerized files are placed under `summeries` directory if you merge the pull request. Example summary file would like `summary-2023-06-15.md`
-- [Example pull request](https://github.com/niteshbalusu11/bitdevs-ai-scraper/pull/11)
+- [Example pull request](https://github.com/niteshbalusu11/bitdevs-ai-scraper/pull/12)
 
 ### For the github action to work you will need to add two repository secrets
 
